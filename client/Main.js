@@ -9,9 +9,20 @@ export default class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      albums: []
+      albums: [],
+      selectedAlbum: {}
     };
+    this.selectedAlbum = this.selectedAlbum.bind(this)
   }
+  selectedAlbum(albumid)  {
+  return async () => {
+    const res = await axios.get(`/api/albums/${albumid}`)
+    const selectedAlbum = res.data
+    console.log('this was clicked')
+    this.setState({selectedAlbum: selectedAlbum})
+  }
+    
+}
 
   async componentDidMount() {
     try {
@@ -30,7 +41,7 @@ export default class Main extends React.Component {
         <div className="container">
           <div id="albums" className="row wrap">
             {this.state.albums.map(album => {
-              return <SingleAlbum key={album.id} album={album} />;
+              return <SingleAlbum selectalbum = {this.selectedAlbum}  key={album.id} album={album} />;
             })}
           </div>
         </div>
